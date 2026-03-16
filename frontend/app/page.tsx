@@ -3,6 +3,8 @@ import { GridCard, type GridCardItem } from "@/components/GridCard";
 import { fetchProducts } from "@/lib/products";
 import type { Product } from "@/types";
 
+export const dynamic = "force-dynamic";
+
 // Target site style banners
 const HERO_SLIDES = [
   {
