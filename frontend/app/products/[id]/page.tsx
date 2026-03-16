@@ -94,7 +94,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 <svg className="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
                 Ask Rufus
               </div>
-              <p className="text-sm text-gray-700 mb-3">Hi, I'm Rufus, your AI shopping assistant. Ask me anything about this product!</p>
+              <p className="text-sm text-gray-700 mb-3">Hi, I&apos;m Rufus, your AI shopping assistant. Ask me anything about this product!</p>
               <div className="relative">
                 <input type="text" placeholder="What are the dimensions?" className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400" disabled />
                 <button className="absolute right-2 top-1.5 p-1 bg-blue-100 text-blue-700 rounded shadow-sm hover:bg-blue-200" disabled>

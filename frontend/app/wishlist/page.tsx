@@ -74,7 +74,7 @@ export default function WishlistPage() {
         {wishlistItems.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-12 border border-gray-200 rounded">
             <h2 className="text-xl font-medium mb-2">Your Wish List is empty</h2>
-            <p className="text-sm text-gray-500 mb-6">Explore today's deals and add items to your list.</p>
+            <p className="text-sm text-gray-500 mb-6">Explore today&apos;s deals and add items to your list.</p>
             <Link href="/" className="bg-[#FFD814] hover:bg-[#F7CA00] text-black px-6 py-2 rounded-full border border-[#FCD200] shadow-sm text-sm">
               Continue shopping
             </Link>
