@@ -84,8 +84,19 @@ export const orderService = {
     const recipientEmail = email || user?.email;
     
     if (recipientEmail) {
-      // Fire and forget email
-      sendOrderConfirmationEmail(formattedOrder.id, recipientEmail, formattedOrder.totalAmount).catch(console.error);
+      try {
+        await sendOrderConfirmationEmail(
+          formattedOrder.id,
+          recipientEmail,
+          formattedOrder.totalAmount
+        );
+      } catch (error) {
+        console.error("Order created but confirmation email failed", {
+          orderId: formattedOrder.id,
+          recipientEmail,
+          error,
+        });
+      }
     }
 
     return formattedOrder;
