@@ -131,9 +131,9 @@ export default function OrdersPage() {
                   {order.items?.map((item: any) => (
                     <div key={item.id} className="flex gap-4">
                       <div className="w-24 h-24 flex-shrink-0 relative rounded-md overflow-hidden bg-white border border-gray-100">
-                        {item.product?.images?.[0]?.imageUrl ? (
+                        {item.product?.image ? (
                           <Image
-                            src={item.product.images[0].imageUrl}
+                            src={item.product.image}
                             alt={item.product?.title || "Product"}
                             fill
                             className="object-contain p-1"
