@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { toast } from "sonner";
 import { addToWishlist } from "@/lib/wishlist";
 
 export function AddToListButton({ productId }: { productId: string }) {
@@ -11,9 +10,8 @@ export function AddToListButton({ productId }: { productId: string }) {
     setLoading(true);
     try {
       await addToWishlist(productId);
-      toast.success("1 item added to Wish List");
     } catch (e) {
-      toast.error("Failed to add to list");
+      console.error("Failed to add to wishlist", e);
     } finally {
       setLoading(false);
     }

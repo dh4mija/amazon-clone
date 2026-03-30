@@ -1,10 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { addCartItem } from "@/lib/cart";
-import { getErrorMessage } from "@/lib/api";
 
 interface AddToCartButtonProps {
   productId: string;
@@ -20,9 +18,8 @@ export function AddToCartButton({ productId, maxQuantity = 1 }: AddToCartButtonP
     setLoading(true);
     try {
       await addCartItem(productId, quantity);
-      toast.success("Added to cart");
     } catch (error) {
-      toast.error(getErrorMessage(error, "Failed to add to cart"));
+      console.error("Failed to add to cart", error);
     } finally {
       setLoading(false);
     }
@@ -34,7 +31,7 @@ export function AddToCartButton({ productId, maxQuantity = 1 }: AddToCartButtonP
       await addCartItem(productId, quantity);
       router.push("/cart");
     } catch (error) {
-      toast.error(getErrorMessage(error, "Failed to proceed to buy"));
+      console.error("Failed to proceed to buy", error);
       setLoading(false);
     }
   };

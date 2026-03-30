@@ -3,7 +3,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { toast } from "sonner";
 import type { Product } from "@/types";
 import { PriceDisplay } from "@/components/ui/PriceDisplay";
 import { RatingStars } from "@/components/ui/RatingStars";
@@ -47,14 +46,15 @@ export function ProductCard({
     try {
       if (newValue) {
         await addToWishlist(product.id);
-        toast.success("Added to Wishlist");
       } else {
         await removeFromWishlist(product.id);
-        toast.success("Removed from Wishlist");
       }
     } catch (err) {
       setWishlisted(!newValue);
-      toast.error(newValue ? "Failed to add to Wishlist" : "Failed to remove from Wishlist");
+      console.error(
+        newValue ? "Failed to add to wishlist" : "Failed to remove from wishlist",
+        err
+      );
     }
   };
 
