@@ -3,15 +3,16 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { fetchWishlist, removeFromWishlist } from "@/lib/wishlist";
 import { addCartItem } from "@/lib/cart";
+import { useCart } from "@/context/CartContext";
 
 export default function WishlistPage() {
   const [wishlistItems, setWishlistItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const router = useRouter();
+  const [addingToCartId, setAddingToCartId] = useState<string | null>(null);
+  const { refreshCartCount } = useCart();
 
   useEffect(() => {
     loadWishlist();
@@ -33,21 +34,23 @@ export default function WishlistPage() {
   const handleRemove = async (productId: string) => {
     try {
       await removeFromWishlist(productId);
-      setWishlistItems(wishlistItems.filter(item => item.product.id !== productId));
+      setWishlistItems((prev) => prev.filter((item) => item.product.id !== productId));
       toast.success("Removed from wishlist");
     } catch (e) {
       toast.error("Failed to remove item");
     }
   };
 
-  const handleMoveToCart = async (productId: string) => {
+  const handleAddToCart = async (productId: string) => {
+    setAddingToCartId(productId);
     try {
       await addCartItem(productId, 1);
-      await handleRemove(productId);
-      toast.success("Moved to cart");
-      router.push("/cart");
+      await refreshCartCount();
+      toast.success("Added to cart!");
     } catch (e) {
-      toast.error("Failed to move to cart");
+      toast.error("Failed to add to cart");
+    } finally {
+      setAddingToCartId(null);
     }
   };
 
@@ -110,11 +113,11 @@ export default function WishlistPage() {
                         
                         <div className="mt-4 flex flex-wrap gap-3">
                            <button 
-                             onClick={() => handleMoveToCart(item.product.id)}
-                             disabled={item.product.stock <= 0}
-                             className="bg-white hover:bg-gray-50 text-xs py-1.5 px-3 border border-gray-300 rounded shadow-sm disabled:opacity-50"
+                             onClick={() => handleAddToCart(item.product.id)}
+                             disabled={item.product.stock <= 0 || addingToCartId === item.product.id}
+                             className="bg-[#FFD814] hover:bg-[#F7CA00] text-amazon-text text-xs py-1.5 px-3 border border-[#FCD200] rounded shadow-sm disabled:opacity-50"
                            >
-                             Add to Cart
+                             {addingToCartId === item.product.id ? "Adding..." : "Add to Cart"}
                            </button>
                            <button 
                              onClick={() => handleRemove(item.product.id)}

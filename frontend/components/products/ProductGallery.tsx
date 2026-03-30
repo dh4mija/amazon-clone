@@ -3,6 +3,8 @@
 import { useState } from "react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { WishlistNotification } from "@/components/ui/WishlistNotification";
+import { useWishlistNotification } from "@/context/WishlistContext";
 
 interface ProductGalleryProps {
   images: Array<{ id: string; imageUrl: string }>;
@@ -11,6 +13,7 @@ interface ProductGalleryProps {
 
 export function ProductGallery({ images, title }: ProductGalleryProps) {
   const [activeIndex, setActiveIndex] = useState(0);
+  const { notificationMessage, isNotificationVisible, hideNotification } = useWishlistNotification();
 
   if (!images || images.length === 0) {
     return (
@@ -63,6 +66,11 @@ export function ProductGallery({ images, title }: ProductGalleryProps) {
             unoptimized
           />
         )}
+        <WishlistNotification
+          message={notificationMessage}
+          isVisible={isNotificationVisible}
+          onClose={hideNotification}
+        />
       </div>
       
       {/* Mobile thumbnails (horizontal) */}
