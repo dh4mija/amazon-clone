@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { addCartItem } from "@/lib/cart";
+import { useCart } from "@/context/CartContext";
 
 interface AddToCartButtonProps {
   productId: string;
@@ -12,12 +13,14 @@ interface AddToCartButtonProps {
 export function AddToCartButton({ productId, maxQuantity = 1 }: AddToCartButtonProps) {
   const [loading, setLoading] = useState(false);
   const [quantity, setQuantity] = useState(1);
+  const { refreshCartCount } = useCart();
   const router = useRouter();
 
   const handleAdd = async () => {
     setLoading(true);
     try {
       await addCartItem(productId, quantity);
+      await refreshCartCount();
     } catch (error) {
       console.error("Failed to add to cart", error);
     } finally {
@@ -29,6 +32,7 @@ export function AddToCartButton({ productId, maxQuantity = 1 }: AddToCartButtonP
     setLoading(true);
     try {
       await addCartItem(productId, quantity);
+      await refreshCartCount();
       router.push("/cart");
     } catch (error) {
       console.error("Failed to proceed to buy", error);
