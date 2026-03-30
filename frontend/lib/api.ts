@@ -75,7 +75,15 @@ export async function requestJson<T>(
     throw new ApiError(error.message, res.status, error.code);
   }
 
-  const json = (await res.json()) as ApiEnvelope<T> | T;
+  // Handle 204 No Content or empty bodies (e.g. wishlist DELETE)
+  if (res.status === 204 || res.headers.get("content-length") === "0") {
+    return null as T;
+  }
+
+  const text = await res.text();
+  if (!text.trim()) return null as T;
+
+  const json = JSON.parse(text) as ApiEnvelope<T> | T;
 
   if (
     typeof json === "object" &&
