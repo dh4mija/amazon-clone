@@ -10,6 +10,7 @@ import { DiscountBadge } from "@/components/ui/DiscountBadge";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
 import { addToWishlist, removeFromWishlist } from "@/lib/wishlist";
+import { WishlistNotification } from "@/components/ui/WishlistNotification";
 
 export interface ProductCardProps {
   product: Product;
@@ -30,6 +31,8 @@ export function ProductCard({
   className,
 }: ProductCardProps) {
   const [wishlisted, setWishlisted] = useState(false);
+  const [showNotification, setShowNotification] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState("");
   const href = `${hrefBase}/${product.id}`;
   const imageUrl =
     product.images?.[0]?.imageUrl ??
@@ -39,16 +42,19 @@ export function ProductCard({
   const handleWishlist = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    
+
     const newValue = !wishlisted;
     setWishlisted(newValue);
 
     try {
       if (newValue) {
         await addToWishlist(product.id);
+        setNotificationMessage("Item saved to Wishlist");
       } else {
         await removeFromWishlist(product.id);
+        setNotificationMessage("Item removed from Wishlist");
       }
+      setShowNotification(true);
     } catch (err) {
       setWishlisted(!newValue);
       console.error(
@@ -98,6 +104,12 @@ export function ProductCard({
               )}
             />
           </button>
+
+          <WishlistNotification
+            message={notificationMessage}
+            isVisible={showNotification}
+            onClose={() => setShowNotification(false)}
+          />
         </div>
         <h3 className="text-amazon-text text-sm font-medium line-clamp-2 mb-1 transition-colors duration-200 group-hover:text-amazon-link-blue">
           {product.title}
