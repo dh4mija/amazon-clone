@@ -2,14 +2,17 @@
 
 import { useState } from "react";
 import { addToWishlist } from "@/lib/wishlist";
+import { useWishlistNotification } from "@/context/WishlistContext";
 
 export function AddToListButton({ productId }: { productId: string }) {
   const [loading, setLoading] = useState(false);
+  const { showWishlistNotification } = useWishlistNotification();
 
   const handleAdd = async () => {
     setLoading(true);
     try {
       await addToWishlist(productId);
+      showWishlistNotification("Item saved to Wishlist");
     } catch (e) {
       console.error("Failed to add to wishlist", e);
     } finally {
