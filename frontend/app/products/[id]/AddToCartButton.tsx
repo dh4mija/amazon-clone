@@ -4,6 +4,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { addCartItem } from "@/lib/cart";
 import { getErrorMessage } from "@/lib/api";
+import { useCart } from "@/context/CartContext";
 
 interface AddToCartButtonProps {
   productId: string;
@@ -13,11 +14,13 @@ interface AddToCartButtonProps {
 export function AddToCartButton({ productId, maxQuantity = 1 }: AddToCartButtonProps) {
   const [loading, setLoading] = useState(false);
   const [quantity, setQuantity] = useState(1);
+  const { refreshCartCount } = useCart();
 
   const handleAdd = async () => {
     setLoading(true);
     try {
       await addCartItem(productId, quantity);
+      await refreshCartCount();
       toast.success("Added to cart");
     } catch (error) {
       toast.error(getErrorMessage(error, "Failed to add to cart"));
